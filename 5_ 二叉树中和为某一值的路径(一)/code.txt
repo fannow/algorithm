@@ -1,0 +1,32 @@
+/**
+ * struct TreeNode {
+ *	int val;
+ *	struct TreeNode *left;
+ *	struct TreeNode *right;
+ * };
+ */
+
+class Solution {
+public:
+    /**
+     * 
+     * @param root TreeNode类 
+     * @param sum int整型 
+     * @return bool布尔型
+     */
+    //自动向下
+    //首先知道root节点的值所以向下
+    //向下通知就要先减取root的值在向下通知
+    bool hasPathSum(TreeNode* root, int sum) {
+        // write code here
+        if(root==NULL){
+            return false;
+        }
+        //首先是保证到达叶子节点在保证sum减去这个节点的值为0
+        if(root->left==NULL&&root->right==NULL&&sum-root->val==0){
+            return true;
+        }
+        //自顶向下告诉子节点当前值sum减去root的值还剩多少，在左子树找不到就在右子树找
+        return hasPathSum(root->right,sum-root->val)||hasPathSum(root->left,sum-root->val);
+    }
+};

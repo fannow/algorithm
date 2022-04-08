@@ -1,0 +1,76 @@
+/*
+struct TreeNode {
+    int val;
+    struct TreeNode *left;
+    struct TreeNode *right;
+    TreeNode(int x) :
+            val(x), left(NULL), right(NULL) {
+    }
+};
+*/
+class Solution {
+public:
+    //双栈法
+    /*
+    首先第一行进入第一个栈中反向出来的，但是下一层也是反向进入栈中的所以出来的时是正向的 
+    */
+    vector<vector<int> > Print(TreeNode* pRoot) {
+         vector<vector<int> > v;
+        if(pRoot==NULL){
+            return v;
+            
+        }
+         stack<TreeNode*>lq;
+        stack<TreeNode*>rq;
+        vector<int> m;
+        lq.push(pRoot);
+        while(!lq.empty()){
+            
+            int size1=lq.size();
+            
+            //单数层数正向
+            while(!lq.empty()){
+                TreeNode*root=lq.top();
+                m.push_back(root->val);
+                
+                lq.pop();
+                if(root->left){
+                    rq.push(root->left);
+                }
+                if(root->right){
+                    rq.push(root->right);
+                }
+ 
+            }
+            //拿到的是双数行不需要反转是是反向的
+            if(!m.empty()){
+            v.push_back(m);
+            }
+            m.clear();
+
+            while(!rq.empty()){
+                TreeNode*root=rq.top();
+                m.push_back(root->val);
+                
+                rq.pop(); 
+                if(root->right){
+                    lq.push(root->right);
+                }
+                if(root->left){
+                    lq.push(root->left);
+                }
+               
+            }
+            if(!m.empty()){
+            v.push_back(m);
+            }
+            m.clear();
+          
+            
+            
+        }
+    
+        return v;
+    }
+    
+};

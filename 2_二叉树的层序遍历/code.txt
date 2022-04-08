@@ -1,0 +1,50 @@
+/**
+ * struct TreeNode {
+ *	int val;
+ *	struct TreeNode *left;
+ *	struct TreeNode *right;
+ * };
+ */
+
+class Solution {
+public:
+    /**
+     * 
+     * @param root TreeNode类 
+     * @return int整型vector<vector<>>
+     */
+    
+    //将父节点入队，父节点出队时将左右子节点带井队
+    //子节点出队时也将自己的子节点带进队列中
+    vector<vector<int> > levelOrder(TreeNode* root) {
+         vector<vector<int> > v;
+        if(root==NULL){
+            return v;
+        }
+        // write code here
+        queue<TreeNode*>q;
+        q.push(root);
+        vector<int> m;
+        while(!q.empty()){
+            int size=q.size();
+            
+            while(size--){
+                TreeNode*root=q.front();
+                m.push_back(root->val);
+                q.pop();
+                if(root->left){
+                    q.push(root->left);
+                    
+                }
+                if(root->right){
+                    q.push(root->right);
+                }
+                
+            }
+            v.push_back(m);
+            m.clear();
+            
+        }
+        return v;
+    }
+};

@@ -1,0 +1,43 @@
+/**
+ * Definition for binary tree
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    //前序遍历下标为1为根节点的
+    //中序遍历在根节点左边是左子树的节点，右边是右子树节点
+    //每创建一个前序遍历的第一个数值相当的于根节点的数值，
+    //当构建玩根节点后就要构建左子树，第二个数值相当于左子树的根节点的数组
+        //所以indx每次加一就相当于构建一个子树的根节点，而begin到end相当于子树节点在vin的范围
+        //每次都要更新
+    int idx=0;
+    TreeNode*CreateTree(vector<int> &pre,vector<int> &vin){
+        if(vin.empty()){
+            return NULL;
+        }
+        //创建根节点
+        //前序遍历第idx就是树根节点的值
+        TreeNode*root=new TreeNode(pre[idx]);
+        //找到根节点在中序遍历的位置
+        //在中序遍历中前边就是左子树的节点，右边就是右子树的节点
+        int mid=find(vin.begin(),vin.end(),pre[idx])-vin.begin();
+        //将中序遍历裁剪成[0,mid-1]左子树节点，[mid-1,end]右子树节点
+        idx++;
+        vector<int> v1(vin.begin(),vin.begin()+mid);
+        root->left=CreateTree(pre,v1);
+        vector<int> v2(vin.begin()+mid+1,vin.end());
+        root->right=CreateTree(pre,v2);
+        return root;
+    }
+    TreeNode* reConstructBinaryTree(vector<int> pre,vector<int> vin) {
+     return   CreateTree(pre,vin);
+        
+            
+
+    }
+};

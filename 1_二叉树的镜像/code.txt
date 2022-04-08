@@ -1,0 +1,48 @@
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+
+ void Swap(TreeNode**a,TreeNode **b){
+        TreeNode*tmp=NULL;
+        tmp=*a;
+        *a=*b;
+        *b=tmp;
+    }
+    
+    TreeNode* mirrorTree(TreeNode* pRoot) {
+        if(pRoot==NULL){
+            return NULL;
+        }
+        // write code here
+       queue<TreeNode*>q;
+        q.push(pRoot);
+        while(!q.empty()){
+            int size=q.size();
+            while(size--){
+                TreeNode*root=q.front();
+                q.pop();
+                //交换左右子节点的地址
+                Swap(&root->left,&root->right);
+                if(root->left){
+                    q.push(root->left);
+                    
+                }
+                if(root->right){
+                    q.push(root->right);
+                    
+                }
+            }
+            
+        }
+        return pRoot;
+    }
+    
+};
