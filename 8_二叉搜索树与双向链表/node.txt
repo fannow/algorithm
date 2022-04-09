@@ -1,0 +1,45 @@
+/*
+struct TreeNode {
+	int val;
+	struct TreeNode *left;
+	struct TreeNode *right;
+	TreeNode(int x) :
+			val(x), left(NULL), right(NULL) {
+	}
+};*/
+class Solution {
+public:
+    //中序遍历时二叉搜索才是有序的
+    TreeNode*head=NULL;
+    TreeNode*cur=NULL;
+    
+    //双指针一个指向链表的头一个指向链表的尾部
+    TreeNode* Convert(TreeNode* root) {
+        if(root==NULL){
+            return NULL;
+        }
+        //中序遍历
+        Convert(root->left);
+        //这里已经到达树的最左节点也就是树的最小的节点
+        //找到链表尾尾部
+        if(cur==NULL){
+           // 初始化链表节点
+            //插入链表的第一个节点
+            head=root;
+            cur=root;
+            //两个指针指向同一个节点
+                
+        }else{
+            //连接后边的节点
+            //将最新节点和后端节点cur连接，最后更新节点cur位置
+            cur->right=root;
+            root->left=cur;
+            cur=root;
+                
+        }
+        
+        Convert(root->right);
+        return head;
+        
+    }
+};
