@@ -1,0 +1,63 @@
+/**
+ * Definition for an interval.
+ * struct Interval {
+ *     int start;
+ *     int end;
+ *     Interval() : start(0), end(0) {}
+ *     Interval(int s, int e) : start(s), end(e) {}
+ * };
+ */
+
+class Solution {
+public:
+    //仿函数
+    //按照start排序
+    //区间strat相等就按照end排序
+    struct vmp{
+    bool operator()(Interval& a,Interval&b){
+            if(a.start==b.start){
+                return a.end>b.end;
+            }
+        return a.start<b.start;
+     }
+    } cmp;
+
+    //排序
+    vector<Interval> merge(vector<Interval> &intervals) {
+        vector<Interval>v;
+        if(intervals.size()==0){
+            return v;
+        }
+        //排序
+        sort(intervals.begin(),intervals.end(),cmp);
+        //
+      vector<Interval>mp;
+        //先将数组第一个元素加入到新开辟的数组，后边将数组中元素和mp的最后一一个元素做比对就行
+        mp.push_back(intervals[0]);
+        //有区间覆盖就直接更新区间，没有就直接插入
+        //合并区间
+        for(int i=1;i<intervals.size();i++){
+            //需要合并区间区间符合的
+            //[a,b][c,d] a<c&&b>c&&b<d,覆盖区间为[c,b]合并区间为[a,d]
+            if(mp[mp.size()-1].start<intervals[i].start&&mp[mp.size()-1].end>=
+               intervals[i].start&&mp[mp.size()-1].end<=intervals[i].end){
+                    //合并区间
+                 //更新区间
+               mp[mp.size()-1].end=intervals[i].end;
+                
+                
+            }
+            else if(mp[mp.size()-1].start<intervals[i].start&&mp[mp.size()-1].end>
+                     intervals[i].start&&mp[mp.size()-1].end>intervals[i].end){
+               //[a,b][c,d] a<c&&b>c&&b>d 区间[c,d]被包围在另一个区间中 合并区间为[a,b] 
+                //区间就是这个不需要更新区间
+           }else if(mp[mp.size()-1].start<intervals[i].start&&mp[mp.size()-1].end<
+                     intervals[i].start&&mp[mp.size()-1].end<intervals[i].end){//其他情况不存在区间重叠情况直接插入即可
+                 mp.push_back(intervals[i]);
+                
+           }
+        } 
+            
+        return mp;
+    }
+};
