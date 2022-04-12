@@ -1,0 +1,53 @@
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    struct cmp{
+        //仿函数
+        //比较
+        bool operator ()(ListNode*node1,ListNode*node2){
+            return node1->val>node2->val; 
+        }
+    };
+    ListNode *mergeKLists(vector<ListNode *> &lists) {
+        if(lists.empty()){
+            return NULL;
+        }
+        //优先级队列
+        //根据链表的头节点的val排序
+        //采用小堆
+        priority_queue<ListNode*,vector<ListNode*>,cmp>q;
+        //遍历链表数组将链表插入到优先级队列中
+        for(int i=0;i<lists.size();i++){
+            if(lists[i]){
+            q.push(lists[i]);
+            }
+        }
+        //创建新链表头节点
+        ListNode*root=new ListNode(-1);
+        ListNode*cur=root;
+        //遍历优先级队列拿出链表，取出头节点，再将剩余链表的插入到优先级队列中重新排序
+        while(!q.empty()){
+            //取出堆顶链表因为堆顶链表的头节点对应数组在所有链表中节点应该是最小的
+            
+            ListNode*node=q.top();
+            q.pop();
+            //将取出的链表插入到新链表中
+            cur->next=new ListNode(node->val);
+            cur=cur->next;
+            //如果链表头节点得下一个节点不为空就重新插入到优先级队列中
+            
+            if(node->next){
+                q.push(node->next);
+            }
+            
+        } 
+        return root->next;
+    }
+};
