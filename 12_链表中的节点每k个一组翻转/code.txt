@@ -1,0 +1,57 @@
+/**
+ * struct ListNode {
+ *	int val;
+ *	struct ListNode *next;
+ * };
+ */
+
+class Solution {
+public:
+    /**
+     * 
+     * @param head ListNode类 
+     * @param k int整型 
+     * @return ListNode类
+     */
+    ListNode* reverseKGroup(ListNode* head, int k) {
+        // write code here
+        if(head==NULL){
+            return NULL;
+        }
+        
+        ListNode*node=head;
+        int num=0;
+        //计算节点个数
+        while(node){
+            
+            num++;
+            node=node->next;
+        }
+        //只反转被K整除的个节点后边节点保持原样
+        num/=k;
+        //栈先进后出
+        ListNode*node1=head;
+        stack<ListNode*> s;
+        int m=0;
+        ListNode*root=new ListNode(-1);
+    ListNode*cur=root;
+        while(num-->0){
+            //每K个节点先入栈，在出战
+            m=k;
+            while(m-->0){
+                s.push(node1);
+                node1=node1->next; 
+            }
+            //出栈
+            while(!s.empty()){
+                cur->next=s.top();
+                cur=cur->next;
+                s.pop();
+            }      
+        }
+        //后边将没有反转的链表链接起来
+        cur->next=node1;
+        return root->next;
+        
+    }
+};
