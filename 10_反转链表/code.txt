@@ -1,0 +1,32 @@
+/*
+struct ListNode {
+	int val;
+	struct ListNode *next;
+	ListNode(int x) :
+			val(x), next(NULL) {
+	}
+};*/
+class Solution {
+public:
+    ListNode* ReverseList(ListNode* root) {
+        if(root==NULL){
+            return NULL;
+        }
+        //保存第一个节点
+        ListNode*node=root->next;
+        //保存第二个节点
+        ListNode*cur=root;
+        cur->next=NULL;
+        while(node){
+            ListNode*node1=node->next;
+            //指针反向
+            node->next=cur;
+            //更新节点
+            cur=node;
+            node=node1;
+
+        }
+        
+    return cur;
+    }
+};

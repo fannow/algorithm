@@ -1,0 +1,65 @@
+/**
+ * struct ListNode {
+ *	int val;
+ *	struct ListNode *next;
+ * };
+ */
+
+class Solution {
+public:
+    /**
+     * 
+     * @param head ListNode类 
+     * @param m int整型 
+     * @param n int整型 
+     * @return ListNode类
+     */  
+    //区间反转先到达反转区间的前一个结点和人后一个节点
+    ListNode* reverseBetween(ListNode* head, int m, int n) {
+        // write code here
+        if(head==NULL){
+            return NULL;
+        }
+        //加入一个不带值头节点
+        ListNode*root=new ListNode(-1);
+        root->next=head;
+        //先到达区间的前一个结点和后一个节点
+        ListNode*cur=root;
+        //保存区间节前一个的节点
+        ListNode*begin=cur;
+        while(m-->0){
+            begin=cur;
+            cur=cur->next;
+        }
+        //还需要区间开始的节点为了后边反转链表的合并
+        ListNode*cur1=cur;
+        //到达区间后边的节点
+        ListNode*node1=root;
+        while(n-->0){
+            node1=node1->next;
+        }
+        //保存区间后的节点
+        ListNode*end=node1->next;
+        //反转区间
+        ListNode*node2=cur->next;
+        ListNode*node=cur;
+        node->next=NULL;
+        //反转区间不到达区间后边的节点
+        while(node2!=end){
+            ListNode*node3=node2->next;
+            //指针反转
+            node2->next=node;
+            //节点更新
+            node=node2;
+            node2=node3;
+        }
+        //node就是反转区间链表的头节点，cur就是反转区间的最后边的节点
+        //链表合并
+        begin->next=node;
+        cur->next=end;
+        return root->next;
+        
+     
+        
+    }
+};
