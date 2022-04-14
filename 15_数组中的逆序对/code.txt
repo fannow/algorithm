@@ -1,0 +1,60 @@
+class Solution {
+private:
+    const int kmod = 1000000007;
+public:
+   int _MergeSort(vector<int>&a,int left,int right,vector<int>&temp) {
+
+	if (left >= right) {
+		return 0;
+		//递归到数组长度为1停止递归，直接返回
+	}
+	//分解
+	int mid = (left + right) / 2;
+       //左右两半逆序之和
+ int ret=_MergeSort(a,left,mid,temp)+_MergeSort(a, mid + 1, right, temp);
+ret%=1000000007;
+
+	int begin1 = left, end1 = mid;
+	int begin2 = mid + 1, end2 = right;
+	int index = begin1;
+
+	//合并+排序
+	while (begin1 <= end1 && begin2 <=end2) {
+		if (a[begin1] <=a[begin2])
+			temp[index++] = a[begin1++];
+		else{
+			temp[index++] = a[begin2++];
+            
+             ret += mid - begin1 + 1; // 奥妙所在
+            /*
+            比如[3,4] 和 [1,2]的结果是一样的，也就是说区间有序和无序结果是一样的。
+            但是如果区间有序会有什么好处吗？当然，如果区间有序，比如[3,4] 和 [1,2]
+            如果3 > 1, 显然3后面的所有数都是大于1， 这里为 4 > 1, 明白其中的奥秘了吧。
+            所以我们可以在合并的时候利用这个规则。
+            
+            
+          
+            还有在取数据时比较大小时只比交前边的两个数（每次都是相邻两个区间在比较大小，每个区间都是有序的）， 
+            【e,f,g】【a,b,c】
+            就直接把较小的数据拿出去了，那上边的数据来说吧当比较a和e,a比e小，把a拿出去但是e后边的都比e大而且还没有比较
+            所以对于a来说逆序对就是前边的区间中从第一个比他大的小标开始一直到区间末尾的下标
+            */
+        }
+	}
+	while (begin1<=end1) 
+		temp[index++] = a[begin1++];
+	while (begin2<=end2)
+		temp[index++] = a[begin2++];
+	//将数据拷贝到原始空间
+	for (int i = left;i <=right;i++) {
+		a[i] = temp[i];
+	}
+       return ret%1000000007;
+}
+     //归并排序技术逆序对
+    int InversePairs(vector<int>&data) {
+        vector<int> v(data.size());
+       
+        return _MergeSort(data,0,data.size()-1,v);
+    }
+};

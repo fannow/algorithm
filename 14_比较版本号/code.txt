@@ -1,0 +1,62 @@
+class Solution {
+public:
+    /**
+     * 代码中的类名、方法名、参数名已经指定，请勿修改，直接返回方法规定的值即可
+     *
+     * 比较版本号
+     * @param version1 string字符串 
+     * @param version2 string字符串 
+     * @return int整型
+     */
+    int compare(string version1, string version2) {
+        //指针遍历比较
+        int i=0;
+        int j=0;
+        string s1="";
+        string s2="";
+        
+        while(i<version1.size()||j<version2.size()){
+            //遇到点就比较转换为数字比较 
+            int num1=0;
+            while(i<version1.size()&&version1[i]!='.'){
+                s1+=version1[i];
+                i++;
+                num1=atoi(s1.c_str());
+              
+                
+             } 
+            s1.clear();
+            //跳过后边的点
+            i++;
+           int num2=0;
+            //上一层while1循环用的是||但是j在一直在增加但是在下边的while循环中前边的条件不成立将后边的条件短路了
+            //以至于后边的条件没有执行所以不存在数组越界
+            //”&&“只有前一个条件为0后边的条件就会被短路不执行-->当有一个不满足条件是才会推出条件(言外之意就是只有当两个条件都满足是才会执行while循环)
+            //“||”如果前边的条件不满足(为o)就会往后走如果后边的条件成立while循环还执行
+            //如果前边的条件为就会短路后边的条件   --->当两个条件都不满足是才会退出循环
+           while(j<version2.size()&&version2[j]!='.'){
+                s2+=version2[j];
+                j++;
+               num2=atoi(s2.c_str());
+             }
+            s2.clear();
+            //跳过后边的点
+            j++;
+                //两个都比较到点好后边
+                //转化为数字进行判断
+                //判断是不是越界
+                //转化为数字进行判断
+       
+            
+            //比价大小
+            if(num1>num2){
+                return 1;
+            }
+            if(num1<num2){
+                return -1;
+            }
+        }
+        //上边都判断不相等的情况剩下的都是相等的情况
+        return 0;
+    }
+};
