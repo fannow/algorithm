@@ -1,0 +1,31 @@
+class Solution {
+public:
+    /*
+    01背包,两个维度，背包容量m, n
+dp[i][j]:最多有i个0，j个1的最大子集的大小为dp[i][j]
+dp[i][j] = max(dp[i][j], dp[i-zeroNum][j-oneNum] + 1)
+0
+外物品正 内背包倒
+
+    */
+    //双属性的背包
+    int findMaxForm(vector<string>& strs, int m, int n) {
+        vector<vector<int>>dp(m+1,vector<int>(n+1,0));//初始化为0
+        for(int i=0;i<strs.size();i++){//遍历背包
+            //计数
+            int zeronum=0,onenum=0;
+            for(char ch:strs[i]){
+                if(ch=='0')zeronum++;
+                else onenum++;
+            }
+            for(int j=m;j>=zeronum;j--){//反向遍历背包容量
+                for(int s=n;s>=onenum;s--){
+                    dp[j][s] = max(dp[j][s], dp[j - zeronum][s - onenum] + 1);
+                }
+            }
+
+        }
+        return dp[m][n];
+
+    }
+};
