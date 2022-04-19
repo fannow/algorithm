@@ -1,0 +1,38 @@
+class Solution {
+public:
+    /**
+     * @param m: An integer m denotes the size of a backpack
+     * @param A: Given n items with size A[i]
+     * @param V: Given n items with value V[i]
+     * @return: The maximum value
+     */
+    int backPackII(int m, vector<int> &A, vector<int> &V) {
+        // write your code here
+        //定义dp数组
+        vector<vector<int>> dp(A.size()+1,vector<int>(m+1,0));
+     
+        //开始递归
+        for(int i=1;i<=A.size();i++){
+            for(int j=1;j<=m;j++){
+                /*对于物品i来说有两种情况首先是
+                不装物品i：首先是因为可能是因为背包容量的问题
+                对于背包装不下物品i：
+                    （1）将物品i装入背包中换出相应大小的物品但是背包中价值就相应减少这就不装物品i
+                    （2）相反换出的物品比之前的价值还是增加的就可以装入商品i了
+                可以装下物品i: 直接装下物品i就i可以   
+                */
+                //首先判断能不能装下物品i
+                if(j<A[i-1]){
+                    dp[i][j]=dp[i-1][j];
+
+                }else{
+
+                dp[i][j]=max(dp[i-1][j],dp[i-1][j-A[i-1]]+V[i-1]);
+                }
+
+
+            }
+        }
+        return dp[A.size()][m];
+    }
+};

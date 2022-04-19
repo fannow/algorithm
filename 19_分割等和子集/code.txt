@@ -1,0 +1,48 @@
+class Solution {
+public:
+    /*
+    首先可以将数组分割为和相等得子集所以这个数组得和必然是一个偶数
+    这道题是将数组分割为子集所以数组分割为一半就可以了，可以将其转换为01背包问题
+    背包容量为数组之和的一半，商品重量和价值就是数组中得数据，
+    如果 j < nums[i]，则在选取的数字的和等于 j 的情况下无法选取当前的数字 nums[i]，有         
+    dp[i][j]  =dp[i-1][j]。
+    如果 j ≥ nums[i]，则对于当前的数字nums[i]，可以选取也可以不选取
+        如果不选取 nums[i]，则 dp[i][j]=dp[i-1][j]；
+        如果选取 nums[i]，则 dp[i][j]=dp[i-1][j−nums[i]] + nums[i]。
+    其实上面的东西可以转化为背包公式，就是weight[i] = nums[i], value[i] = nums[i];
+    只要求出一组等于数组之和的一半得子数组就可以将数组分割为子数组之和相等的得两个子数组
+    */
+    bool canPartition(vector<int>& nums) {
+        //先判断数组和是不是偶数
+        int sum=0;
+        int n=nums.size();
+        for(int i=0;i<n;i++){
+            sum+=nums[i];
+
+        }
+        if(sum%2==1){
+            return false;
+        }
+        int num=sum/2;
+        //滚动数组
+        vector<vector<int>>dp(n,vector<int>(num+1,0));
+        //将上一行结果拷贝下来
+        for(int i=1;i<n;i++){//遍历物品
+            for(int j=1;j<=num;j++){//背包容量
+                if(j<nums[i-1]){
+                    //  没有将第i件物品放入
+                    dp[i][j]=dp[i-1][j];
+                }else{
+                      dp[i][j]=max(dp[i-1][j],dp[i-1][j-nums[i-1]]+nums[i-1]);
+            
+                }
+            }
+
+        }
+
+        if(dp[n-1][num]==num){
+           return true;
+        }
+        return false;
+    }
+};

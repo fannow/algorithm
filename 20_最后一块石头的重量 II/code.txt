@@ -1,0 +1,35 @@
+class Solution {
+public:
+    /*
+    将每个石头重量看作是即使石头的体积也是石头的价值
+    所以这和之前得01背包问题差不多
+    将石头重量分割为重量差不多得两堆，让两堆石头相互撞击，因为两堆石头重量差不多，所以最后剩下的石头重量一定是最小的
+    我们只要将石头装进背包容量为石头总重量得半就可以
+    */
+    int lastStoneWeightII(vector<int>& stones) {
+        int sum=0;
+        for(int i=0;i<stones.size();i++){
+            sum+=stones[i];
+        }
+        int num=sum/2;
+        vector<vector<int>>dp(stones.size()+1,vector<int>(num+1,0));
+        for(int i=1;i<=stones.size();i++){
+            for(int j=1;j<=num;j++){
+                if(j<stones[i-1]){
+                    dp[i][j]=dp[i-1][j];
+                }else{
+                
+                    dp[i][j]=max(dp[i-1][j], dp[i - 1][j - stones[i - 1]] + stones[i - 1]);
+                }
+            }
+        }
+        //最后从总重量中减去消耗得石头质量
+        return sum-2*dp[stones.size()][num];
+        /*
+        最后dp[target]⾥是容量为target的背包所能背的最⼤重量。
+那么分成两堆⽯头，⼀堆⽯头的总重量是dp[target]，另⼀堆就是sum - dp[target]。
+在计算target的时候，target = sum / 2 因为是向下取整，所以sum - dp[target] ⼀定是⼤于等于
+dp[target]的。那么相撞之后剩下的最⼩⽯头重量就是 (sum - dp[target]) - dp[target]。
+        */
+    }
+};
