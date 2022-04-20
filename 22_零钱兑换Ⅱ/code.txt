@@ -1,0 +1,23 @@
+class Solution {
+public:
+    /*
+    初始化
+    dp[1]:表示组合为一元的组合数的
+    
+    */
+    int change(int amount, vector<int>& coins) {
+        vector<int> dp(amount+1,0);
+        //初始化
+        dp[0]=1;
+        for(int i=0;i<coins.size();i++){//遍历商品
+            for(int j=coins[i];j<=amount;j++){//遍历背包容量
+            //从前往后保证每个商品能够被重复拿取
+            //不需要将之前数据覆盖
+             dp[j]+=dp[j-coins[i]];
+
+            }
+        }
+        return dp[amount];
+
+    }
+};
