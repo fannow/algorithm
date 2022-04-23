@@ -1,0 +1,46 @@
+class Solution {
+public:
+    /*
+    因为只有删除只需比较word1的第i个字符和word2的第j个字符是不是相等
+    不相等取一下三种情况
+    1、只删除word1第i个字符
+        更新dp数组dp[i-1][j]+1
+    2、只删除word2的第j个字符
+       更新dp数组dp[i][j-1]+1
+    3、同时删除word1第i个字符和word2的第j个字符
+          更新dp数组dp[i-1][j-1]+2
+
+    所以直接将这三步取得最小值
+    初始化
+        对于dp数组来说dp[i][0]就是将字符串word1删除到空串的最小步数
+        因为为字符串的长度
+    返回值：
+        dp[n][m]
+    */
+    int minDistance(string word1, string word2) {
+        int n=word1.size();
+        int m=word2.size();
+        vector<vector<int>>dp(n+1,vector<int>(m+1,0));
+        //初始化
+        for(int i=0;i<=n;i++) dp[i][0]=i;
+        for(int i=0;i<=m;i++) dp[0][i]=i;
+
+        //dp
+        for(int i=1;i<=n;i++){
+            for(int j=1;j<=m;j++){
+                //相等
+                if(word1[i-1]==word2[j-1]){
+                    //将前边的得到的赋给现在的
+                    dp[i][j]=dp[i-1][j-1];
+                }
+                //不相等
+                else{
+                dp[i][j]=min(min(dp[i-1][j]+1,dp[i][j-1]+1),dp[i-1][j-1]+2);
+                }
+            }
+        }
+        
+
+return dp[n][m];
+    }
+};
