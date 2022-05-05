@@ -1,0 +1,63 @@
+class Solution {
+public:
+    /**
+     * 代码中的类名、方法名、参数名已经指定，请勿修改，直接返回方法规定的值即可
+     * 计算两个数之和
+     * @param s string字符串 表示第一个整数
+     * @param t string字符串 表示第二个整数
+     * @return string字符串
+     */
+    string solve(string s, string t) {
+        if(s.empty()){
+            return t;
+        }else if(t.empty()){
+            return s;
+        }
+        // write code here
+        int i=0;
+        int sum=0;
+        string ss="";
+        int n=s.size()-1,m=t.size()-1;
+        while(n>=0&&m>=0){
+            sum=s[n]-'0'+t[m]-'0'+i;
+            if(sum>=10){
+                sum-=10;
+                i=1;
+            }else{
+                i=0;
+            }
+            char sh=sum+'0';
+         ss.insert(ss.begin(),sh);
+            n--;
+            m--;
+        }
+        while(n>=0){
+             sum=s[n]-'0'+i;
+            if(sum>=10){
+                sum-=10;
+                i=1;
+            }else{
+                i=0;
+            }
+            char sh=sum+'0';
+             ss.insert(ss.begin(),sh);
+            n--;
+        }
+        while(m>=0){
+             sum=t[m]-'0'+i;
+            if(sum>=10){
+                sum-=10;
+                i=1;
+            }else{
+                i=0;
+            }
+            char sh=sum+'0';
+             ss.insert(ss.begin(),sh);
+            m--;
+        }
+        if(i==1){
+            ss.insert(ss.begin(),i+'0');
+        }
+        return ss;
+    }
+};
