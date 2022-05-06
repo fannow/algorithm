@@ -1,0 +1,35 @@
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode() : val(0), next(nullptr) {}
+ *     ListNode(int x) : val(x), next(nullptr) {}
+ *     ListNode(int x, ListNode *next) : val(x), next(next) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode* removeNthFromEnd(ListNode* head, int n) {
+        //添加伪首节点
+        ListNode*proot=new ListNode(-1);
+        proot->next=head;
+        ListNode*root=proot;
+        //节点先到达链表的第n个节点
+        while(n--){
+            root=root->next;
+        }
+        ListNode*cur=proot;
+        ListNode*pre=NULL;
+        //等到节点root位NULL时cur就会到达节点的倒数的第n个节点
+        while(root){
+            root=root->next;
+            pre=cur;
+            cur=cur->next;
+        }
+        //删除节点
+        pre->next=cur->next;
+        //连接节点
+        return proot->next;
+    }
+};
