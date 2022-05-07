@@ -1,0 +1,86 @@
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode() : val(0), next(nullptr) {}
+ *     ListNode(int x) : val(x), next(nullptr) {}
+ *     ListNode(int x, ListNode *next) : val(x), next(next) {}
+ * };
+ */
+class Solution {
+public:
+    //哈希
+    ListNode* addTwoNumbers(ListNode* l1, ListNode* l2) {
+         // write code here
+         vector<int> v1;
+        vector<int> v2;
+        while(l1){
+            v1.push_back(l1->val);
+            l1=l1->next;
+        }
+        while(l2){
+            v2.push_back(l2->val);
+            l2=l2->next;
+        }
+        ListNode*proot=new ListNode(-1);
+        ListNode*root=proot;
+        int end1=v1.size()-1;
+        int end2=v2.size()-1;
+        int num=0;//进位
+        while(end1>=0&&end2>=0){
+            int sum=v1[end1]+v2[end2]+num;
+            if(sum>=10){
+                sum-=10;
+                num=1;
+            }else{
+                num=0;
+            }
+            root->next=new ListNode(sum);
+            root=root->next;
+            end1--;
+            end2--;
+        }
+        while(end1>=0){
+            int sum=v1[end1]+num;
+            if(sum>=10){
+                sum-=10;
+                num=1;
+            }else{
+                num=0;
+            }
+            root->next=new ListNode(sum);
+            root=root->next;
+            end1--;
+        }
+        while(end2>=0){
+            int sum=v2[end2]+num;
+            if(sum>=10){
+                sum-=10;
+                num=1;
+            }else{
+                num=0;
+            }
+            root->next=new ListNode(sum);
+            root=root->next;
+            end2--;
+        }
+        //检测进制位是不是为0
+        if(num!=0){
+            root->next=new ListNode(num);
+        }
+        //反转链表
+        ListNode *cur=proot->next->next;
+        ListNode*node=proot->next;
+        node->next=NULL;
+        while(cur){
+            ListNode*node1=cur->next;
+            cur->next=node;
+            node=cur;
+            cur=node1;
+        }
+        
+        return node;
+
+    }
+};
